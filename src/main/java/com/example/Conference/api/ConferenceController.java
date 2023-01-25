@@ -129,7 +129,7 @@ public class ConferenceController {
         }
         participantService.saveAll(participantants);
 
-        return new ResponseEntity<>(createdRoom, HttpStatus.CREATED);
+        return new ResponseEntity<ConferenceRoom>(createdRoom, HttpStatus.CREATED);
     }
 
     @PostMapping("/{roomId}/register")
@@ -161,7 +161,7 @@ public class ConferenceController {
     }
 
     @DeleteMapping("/{roomId}/delete")
-    public ResponseEntity<?> registerParticipant(@PathVariable("roomId") Long roomId,
+    public ResponseEntity<?> deleteParticipant(@PathVariable("roomId") Long roomId,
                                                  @RequestParam("participantId") Long participantId){
 
         var room = conferenceRoomService.findById(roomId);
