@@ -12,6 +12,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ConferenceRoomResponseDTO {
+
+    private Long ConferenceId;
     private String name;
     private int totalParticipant;
     private int maxCapacity;

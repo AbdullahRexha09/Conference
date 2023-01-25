@@ -6,6 +6,7 @@ import com.example.Conference.domain.Participant;
 import com.example.Conference.dto.ConferenceRoomDTO;
 import com.example.Conference.dto.ConferenceRoomResponseDTO;
 import com.example.Conference.dto.ParticipantDTO;
+import com.example.Conference.dto.ResponseMessageDTO;
 import com.example.Conference.service.BookingService;
 import com.example.Conference.service.ConferenceRoomService;
 import com.example.Conference.service.ParticipantService;
@@ -51,6 +52,7 @@ public class ConferenceController {
                     stream().map(s -> new ParticipantDTO(s.getId(), s.getFirstName(), s.getLastName())).collect(Collectors.toList());
 
             dtoToRet.add(new ConferenceRoomResponseDTO(
+                    conferenceRoom.getId(),
                     conferenceRoom.getName(),
                     conferenceRoom.getTotalParticipant(),
                     conferenceRoom.getMaxCapacity(),
@@ -64,7 +66,7 @@ public class ConferenceController {
     }
 
     @GetMapping("/{roomId}/availability")
-    public ResponseEntity<Boolean> checkAvailability(@PathVariable("roomId") Long roomId,
+    public ResponseEntity<?> checkAvailability(@PathVariable("roomId") Long roomId,
                                                      @RequestParam("registeredParticipants") int registeredParticipants,
                                                      @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
                                                      @RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
@@ -83,7 +85,9 @@ public class ConferenceController {
         }
 
         var isTimeAvailable = conferenceRoomService.isTimeAvailable(room, startTime, endTime);
-        return new ResponseEntity<>(isTimeAvailable, HttpStatus.OK);
+        return new ResponseEntity<>(isTimeAvailable
+                ? new ResponseMessageDTO("Available")
+                : new ResponseMessageDTO("Not available"), HttpStatus.OK);
     }
 
     @PostMapping("/{roomId}/cancel")
@@ -96,7 +100,7 @@ public class ConferenceController {
         room.setIsCancelled(true);
         room.setName("Was_" + room.getName());
         conferenceRoomService.create(room);
-        return new ResponseEntity<>(true, HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessageDTO("Successfully cancelled"), HttpStatus.OK);
     }
 
     @PostMapping("create")
@@ -140,7 +144,7 @@ public class ConferenceController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         if((room.getTotalParticipant() + request.size() > room.getMaxCapacity())){
-            return new ResponseEntity<>("No available seats! left:" + (room.getMaxCapacity() -room.getTotalParticipant()), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseMessageDTO("No available seats! left:" + (room.getMaxCapacity() -room.getTotalParticipant())), HttpStatus.BAD_REQUEST);
         }
 
         var numberOfParticipants = request.size();
@@ -155,9 +159,8 @@ public class ConferenceController {
             participant.setConferenceRoom(room);
             participantants.add(participant);
         }
-        participantService.saveAll(participantants);
 
-        return new ResponseEntity<>("users successfully added!", HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseMessageDTO("users successfully added!"), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{roomId}/delete")
@@ -178,7 +181,7 @@ public class ConferenceController {
         conferenceRoomService.create(room);
 
         participantService.deleteById(participantId);
-        return new ResponseEntity<>("user successfully deleted!", HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseMessageDTO("user successfully deleted!"), HttpStatus.CREATED);
 
     }
 
