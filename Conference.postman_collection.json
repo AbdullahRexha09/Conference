@@ -1,0 +1,208 @@
+{
+	"info": {
+		"_postman_id": "f787f045-8663-4807-9514-7551e37b1ae9",
+		"name": "Conference",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10022694"
+	},
+	"item": [
+		{
+			"name": "Authenticate",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n \"username\":\"Shpetim\",\r\n \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/user/authenticate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"user",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateConference",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    // dont forget to incule JWT token from Authenticate\r\n    \"name\": \"Room 101\",\r\n    \"maxCapacity\": 10,\r\n    \"startTime\": \"2022-02-01T18:00:00\",\r\n    \"endTime\": \"2022-02-01T20:00:00\",\r\n    \"participantDTO\":[\r\n        {\r\n            \"firstName\":\"Abdullah\",\r\n            \"lastName\":\"Rexha\"\r\n        },\r\n        {\r\n            \"firstName\":\"Shpetim\",\r\n            \"lastName\":\"Rexha\"\r\n        }\r\n\r\n    ]\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/conference/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"conference",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AllConferences",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/conference/conferences",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"conference",
+						"conferences"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CheckAvailability",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/conference/7/availability?registeredParticipants=9&startTime=2022-02-01T18:00:00&endTime=2022-02-01T19:00:00",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"conference",
+						"7",
+						"availability"
+					],
+					"query": [
+						{
+							"key": "registeredParticipants",
+							"value": "9"
+						},
+						{
+							"key": "startTime",
+							"value": "2022-02-01T18:00:00"
+						},
+						{
+							"key": "endTime",
+							"value": "2022-02-01T19:00:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CanceConferencelById",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/conference/7/cancel",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"conference",
+						"7",
+						"cancel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RegisterParticipants",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"firstName\": \"Behlul\",\r\n        \"lastName\":\"Nreca\"\r\n    },\r\n     {\r\n        \"firstName\": \"Shemsedin\",\r\n        \"lastName\":\"Gasha\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1/conference/7/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"conference",
+						"7",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteParticipantById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/v1/conference/173456/delete?participantId={number}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"conference",
+						"173456",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "participantId",
+							"value": "{number}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
