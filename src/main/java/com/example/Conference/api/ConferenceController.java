@@ -46,10 +46,11 @@ public class ConferenceController {
 
         var conferences =  conferenceRoomService.conferences();
 
-
         for(ConferenceRoom conferenceRoom : conferences){
             var participants = conferenceRoom.getParticipants().
-                    stream().map(s -> new ParticipantDTO(s.getId(), s.getFirstName(), s.getLastName())).collect(Collectors.toList());
+                    stream()
+                    .map(s -> new ParticipantDTO(s.getId(), s.getFirstName(), s.getLastName()))
+                    .collect(Collectors.toList());
 
             dtoToRet.add(new ConferenceRoomResponseDTO(
                     conferenceRoom.getId(),
@@ -67,16 +68,17 @@ public class ConferenceController {
 
     @GetMapping("/{roomId}/availability")
     public ResponseEntity<?> checkAvailability(@PathVariable("roomId") Long roomId,
-                                                     @RequestParam("registeredParticipants") int registeredParticipants,
-                                                     @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
-                                                     @RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
+                                               @RequestParam("registeredParticipants") int registeredParticipants,
+                                               @RequestParam("startTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startTime,
+                                               @RequestParam("endTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endTime) {
+
         var room = conferenceRoomService.findById(roomId);
         if (room == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         if(room.isIsCancelled()){
-            return new ResponseEntity<>(true, HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessageDTO("Available"), HttpStatus.OK);
         }
 
         var isParticipantsLimitReached = registeredParticipants > room.getMaxCapacity();
@@ -98,7 +100,7 @@ public class ConferenceController {
         }
 
         room.setIsCancelled(true);
-        room.setName("Was_" + room.getName());
+        room.setName("Was_" + room.getName()); // When cancelled mark the name to be different because of uniqueness
         conferenceRoomService.create(room);
         return new ResponseEntity<>(new ResponseMessageDTO("Successfully cancelled"), HttpStatus.OK);
     }
@@ -107,6 +109,7 @@ public class ConferenceController {
     public ResponseEntity<?> createConferenceRoom(@RequestBody ConferenceRoomDTO conferenceRoomDTO) {
 
         var conferencesByName = conferenceRoomService.findByName(conferenceRoomDTO.getName()); // Name is unique
+
         if(conferencesByName.size() > 0 && !conferencesByName.get(0).isIsCancelled()){ // Checking if conference exists and also is not cancelled
             return new ResponseEntity<>("Conference is already scheduled!", HttpStatus.BAD_REQUEST);
         }

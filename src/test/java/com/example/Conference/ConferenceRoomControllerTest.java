@@ -80,9 +80,9 @@ public class ConferenceRoomControllerTest {
 
     @Test
     public void createConferenceRoomTest() {
-
+        var conferenceName = "Conference Room_" + LocalDateTime.now();
         ConferenceRoomDTO conferenceRoomDTO = new ConferenceRoomDTO();
-        conferenceRoomDTO.setName("Conference Room");
+        conferenceRoomDTO.setName(conferenceName);
         conferenceRoomDTO.setMaxCapacity(100);
         conferenceRoomDTO.setStartTime(LocalDateTime.parse("2022-01-01T10:00:00"));
         conferenceRoomDTO.setEndTime(LocalDateTime.parse("2022-01-01T12:00:00"));
@@ -97,7 +97,7 @@ public class ConferenceRoomControllerTest {
 
         conferenceRoomDTO.setParticipantDTO(Arrays.asList(participantDTO1, participantDTO2));
 
-        RestAssured.baseURI = "http://localhost:8080";
+        RestAssured.baseURI = baseURI;
 
         Response response = RestAssured.given()
                 .header("Authorization", "Bearer " + getJWTToken())
@@ -107,7 +107,7 @@ public class ConferenceRoomControllerTest {
 
         response.then()
                 .statusCode(201)
-                .body("name", equalTo("Conference Room 1"))
+                .body("name", equalTo(conferenceName))
                 .body("maxCapacity", equalTo(100))
                 .body("totalParticipant", equalTo(2));
 

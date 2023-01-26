@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 @SpringBootApplication
 public class AuthenticationApplication {
@@ -33,6 +32,9 @@ public class AuthenticationApplication {
 
 	@Autowired
 	ParticipantService participantService;
+
+	// feeding database with initial data
+	// Adding roles and mapping  users with specific roles
 	@Bean
 	CommandLineRunner run(UserService userService){
 		return orgs ->{
