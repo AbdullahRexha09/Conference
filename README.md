@@ -15,7 +15,7 @@ Also we feed database with some dummy data needed for some tests and also to und
 
 #Endpoints
 
->-First Authenticate by using <strong>GET</strong> endpoint of <strong>localhost:8080/api/v1/user/authenticate</strong> and by using the body as in the postman json file
+>- First Authenticate by using <strong>GET</strong> endpoint of <strong>localhost:8080/api/v1/user/authenticate</strong> and by using the body as in the postman json file
 
 >- Get feeded conferences by the <strong>GET</strong> endpoint of <strong>localhost:8080/api/v1/conference/conferences</strong> or whenever you add a new conference
 
@@ -30,4 +30,4 @@ Also we feed database with some dummy data needed for some tests and also to und
 >- Delete participant by id by the <strong>DELETE</strong> endpoint of <strong>localhost:8080/api/v1/conference/{conferenceRoomId}/delete?participantId={participantId}</strong>
 
 # Testing 
-Testing is done as required by the Rest-assured library and all of the endpoints are tested
+> Testing is done as required by the Rest-assured library and all of the endpoints are tested
