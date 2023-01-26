@@ -13,7 +13,7 @@ On the bootstrap of application we feed the database with users and their respec
 
 Also we feed database with some dummy data needed for some tests and also to understand better the application logic
 
-#Endpoints
+# Endpoints
 
 >- First Authenticate by using <strong>GET</strong> endpoint of <strong>localhost:8080/api/v1/user/authenticate</strong> and by using the body as in the postman json file
 
