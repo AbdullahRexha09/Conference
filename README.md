@@ -30,4 +30,4 @@ Also we feed database with some dummy data needed for some tests and also to und
 >- Delete participant by id by the <strong>DELETE</strong> endpoint of <strong>localhost:8080/api/v1/conference/{conferenceRoomId}/delete?participantId={participantId}</strong>
 
 # Testing 
-> Testing is done as required by the Rest-assured library and all of the endpoints are tested
+> Testing is done by the Rest-assured library and all of the endpoints are tested
